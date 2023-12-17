@@ -5,6 +5,7 @@ export const env = {
     port: process.env.PORT || 3000,
   },
   mongo: {
+    mongo_ip: process.env.MONGO_IP || '',
     ip: process.env.Mongo_Ip,
     user: process.env.Mongo_User,
     password: process.env.Mongo_Password,
