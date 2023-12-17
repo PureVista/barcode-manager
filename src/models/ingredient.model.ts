@@ -3,9 +3,10 @@ import { WithId } from 'mongodb';
 
 export const Ingredient = z.object({
   name: z.string(),
-  isAllergen: z.boolean().default(false),
-  isDamaging: z.boolean().default(false),
+  isHarmful: z.boolean(),
   description: z.string(),
+  createdAt: z.date().optional().default(new Date()),
+  updatedAt: z.date().optional().default(new Date()),
 });
 
 export type Ingredient = z.infer<typeof Ingredient>;
