@@ -1,0 +1,1 @@
+export * from "./middlewares/global/body-parser.global.middleware";
