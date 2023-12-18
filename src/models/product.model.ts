@@ -9,7 +9,7 @@ export enum ProductType {
 
 export const Product = z.object({
   name: z.string(),
-  barcode: z.string(),
+  barcodes: z.array(z.string()),
   brand: z.string(),
   description: z.string(),
   isHarmful: z.boolean(),
