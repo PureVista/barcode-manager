@@ -7,18 +7,20 @@ The fields must be always the same and they are name, brand, description, isHarm
 Json Data: ${{
   name: '',
   brand: '',
-  description: '',
-  isHarmful: 'Very Harmful / Harmful / Beneficial / Very Beneficial',
-  harmfullnessPercentage: 70, // number 0 - 100
-  productType: 'Food / Cosmetic',
+  description: 'About it`s harmfullness 2 or 3 line text.',
+  isHarmful: '// Very Harmful / Harmful / Beneficial / Very Beneficial', 
+  harmfullnessPercentage: 50, // number between 0 - 100 for damaging health
+  foodOrCosmetic: '', // Food OR Cosmetic
   ingredients: [
     {
       name: '',
-      description: 'About it`s harmfullness',
-      isHarmful: 'Very Harmful / Harmful / Beneficial / Very Beneficial',
+      description: 'About it`s harmfullness 2 or 3 line text.',
+      isHarmful: '// Very Harmful / Harmful / Beneficial / Very Beneficial', 
     },
   ],
 }}
+
+Only return JSON, Don't write any text.
 `;
 
 export const fillHistory = (productName: string): Array<ChatCompletionMessageParam> => {

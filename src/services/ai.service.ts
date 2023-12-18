@@ -1,16 +1,22 @@
 import OpenAI from 'openai';
 import { env } from '../env';
 import { fillHistory } from '../utils';
+import { GptProductModel } from '../api';
 
 export class AIService {
   private apiKey: string = env.open_ai.apiKey;
+  private model: string = env.open_ai.model;
+  
   openAI = new OpenAI({ apiKey: this.apiKey, maxRetries: 0, timeout: 20 * 1000 });
 
-  askGptWithProduct = async (productName: string) => {
+  askGptWithProduct = async (productName: string): Promise<GptProductModel> => {
     const chatCompletion = await this.openAI.chat.completions.create({
       messages: fillHistory(productName),
-      model: 'gpt-3.5-turbo',
+      model: this.model,
     });
-    return chatCompletion.choices[0].message.content;
+    const content = chatCompletion.choices[0].message.content;
+    if (!content) throw new Error('There is an error when fetching data.');
+    const response: GptProductModel = JSON.parse(content);
+    return response;
   };
 }
