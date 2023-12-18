@@ -1,5 +1,6 @@
 import * as z from 'zod';
 import { ObjectId, WithId } from 'mongodb';
+import { db } from '../loaders';
 
 export enum ProductType {
   F = 'Food',
@@ -21,3 +22,5 @@ export const Product = z.object({
 
 export type Product = z.infer<typeof Product>;
 export type ProductWithId = WithId<Product>;
+
+export const Products = db.collection<Product>('products');
