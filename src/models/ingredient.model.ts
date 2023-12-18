@@ -6,8 +6,8 @@ export const Ingredient = z.object({
   name: z.string(),
   isHarmful: z.boolean(),
   description: z.string(),
-  isResponsed: z.boolean(),
-  isApproved: z.boolean(),
+  isResponsed: z.boolean().default(false),
+  isApproved: z.boolean().default(false),
   createdAt: z.date().optional().default(new Date()),
   updatedAt: z.date().optional().default(new Date()),
 });

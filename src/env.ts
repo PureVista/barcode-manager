@@ -11,4 +11,7 @@ export const env = {
     password: process.env.Mongo_Password,
     db: process.env.Mongo_Db,
   },
+  open_ai: {
+    apiKey: process.env.OPENAI_API_KEY || '',
+  },
 };
