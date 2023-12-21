@@ -12,8 +12,8 @@ export class IngredientService {
     return ingredient;
   };
 
-  create = async (params: Ingredient): Promise<IngredientWithId> => {
-    const ingredient = Ingredient.parse(params);
+  create = async (_ingredient: Ingredient): Promise<IngredientWithId> => {
+    const ingredient = Ingredient.parse(_ingredient);
     const insertedIngredient = await Ingredients.insertOne({ ...ingredient });
     return { _id: insertedIngredient.insertedId, ...ingredient };
   };
@@ -25,13 +25,18 @@ export class IngredientService {
     return { _id: updatedIngredient.upsertedId, ...ingredient };
   };
 
-  createMany = async (_ingredients: Ingredient[]): Promise<boolean> => {
-    const ingredients: Ingredient[] = [];
-    for (const _ingredient of _ingredients) {
+  createMany = async (_ingredients: Ingredient[]): Promise<IngredientWithId[]> => {
+    const ingredients: IngredientWithId[] = [];
+    for await (const _ingredient of _ingredients) {
+      const pastIngredient = await Ingredients.findOne({ name: _ingredient.name });
+      if (pastIngredient) {
+        ingredients.push(pastIngredient);
+        continue;
+      }
       const ingredient = Ingredient.parse(_ingredient);
-      ingredients.push(ingredient);
+      const newIngredient = await Ingredients.insertOne(ingredient);
+      ingredients.push({ ...ingredient, _id: newIngredient.insertedId });
     }
-    const insertResult = await Ingredients.insertMany(ingredients);
-    return insertResult.acknowledged;
+    return ingredients;
   };
 }
