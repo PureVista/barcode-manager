@@ -21,13 +21,11 @@ export class AIController {
     try {
       if (!body.productName || body.productName.length < 3)
         throw new Error('Product name must be sended and it must be longer than 2 characters.');
+      const productType = body.productType === ProductType.C ? ProductType.C : ProductType.F;
 
       const gptResponse = await this.aiService.askGptWithProduct(body.productName);
       const insertedIngredients = await this.ingredientService.createMany(gptResponse.ingredients as Ingredient[]);
-      const product = await this.productService.createFromGpt(
-        { ...gptResponse.product, productType: body.productType || ProductType.F },
-        insertedIngredients
-      );
+      const product = await this.productService.createFromGpt({ ...gptResponse.product, productType }, insertedIngredients);
       return res.status(200).send({ result: product });
     } catch (error: any) {
       return res.status(400).send(error.message);
