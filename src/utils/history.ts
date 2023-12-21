@@ -2,7 +2,7 @@ import { ChatCompletionMessageParam } from 'openai/resources';
 
 const firstMessage: string = `I need a JSON data. This data should list products and ingredients. There should be some properties in the JSON structure.\n
 
-The fields must be always the same and they are name, brand, description, isHarmful, harmfullnessPercentage, productType for product. name, description and isHarmful for ingredients.
+The fields must be always the same and they are name, brand, description, isHarmful, harmfullnessPercentage, productType for inside product object. name, description and isHarmful for ingredients array. So my json response should be return two things. An array of ingredients, and an object of product.
 
 Json Data: ${{
   name: '',
