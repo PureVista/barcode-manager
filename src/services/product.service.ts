@@ -8,6 +8,11 @@ export class ProductService {
     return products;
   };
 
+  findOne = async (query: Filter<ProductWithId>): Promise<ProductWithId | null> => {
+    const product = await Products.findOne(query);
+    return product;
+  };
+
   createFromGpt = async (_product: Filter<Product>, ingredients: IngredientWithId[]): Promise<ProductWithId> => {
     const product = Product.parse(_product);
     const ingredientsIds = ingredients.map((ingredient) => ingredient._id);

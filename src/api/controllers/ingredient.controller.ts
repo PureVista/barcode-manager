@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Patch, Post, Req, Res } from 'routing-controllers';
 import { Request, Response } from 'express';
+import { ObjectId } from 'mongodb';
 
 import { ArrayResponse, ObjectResponse } from '..';
 import { IngredientService } from '../../services';
 import { IngredientWithId, Ingredients } from '../../models';
-import { ObjectId } from 'mongodb';
 
 @Controller('/ingredients')
 export class IngredientsController {
@@ -45,11 +45,8 @@ export class IngredientsController {
     @Res() res: Response<ObjectResponse<IngredientWithId>>
   ): Promise<Response<ObjectResponse<IngredientWithId>>> {
     try {
-      const updatedIngredient = await Ingredients.findOneAndUpdate(
-        { _id: new ObjectId(request.params._id) },
-        { $set: { isApproved: true } },
-        { returnDocument: 'after' }
-      );
+      const _id = new ObjectId(request.params._id);
+      const updatedIngredient = await Ingredients.findOneAndUpdate({ _id }, { $set: { isApproved: true } }, { returnDocument: 'after' });
       return res.status(200).send({ result: updatedIngredient });
     } catch (error: any) {
       return res.status(400).send(error.message);
