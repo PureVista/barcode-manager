@@ -24,4 +24,14 @@ export class IngredientService {
     if (!updatedIngredient.upsertedId) throw new Error('There is an error with updating!');
     return { _id: updatedIngredient.upsertedId, ...ingredient };
   };
+
+  createMany = async (_ingredients: Ingredient[]): Promise<boolean> => {
+    const ingredients: Ingredient[] = [];
+    for (const _ingredient of _ingredients) {
+      const ingredient = Ingredient.parse(_ingredient);
+      ingredients.push(ingredient);
+    }
+    const insertResult = await Ingredients.insertMany(ingredients);
+    return insertResult.acknowledged;
+  };
 }
