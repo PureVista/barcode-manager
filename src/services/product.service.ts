@@ -8,7 +8,7 @@ export class ProductService {
     return products;
   };
 
-  mapAPIQueryParamForProducts = (isFood?: boolean): Filter<ProductWithId> => {
+  mapAPIQueryParamForProducts = (isFood: boolean = false): Filter<ProductWithId> => {
     let mongoQuery: Filter<ProductWithId> = {};
     mongoQuery = isFood ? { ...mongoQuery, productType: ProductType.F } : { ...mongoQuery, productType: ProductType.C };
     return mongoQuery;
