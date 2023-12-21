@@ -23,9 +23,7 @@ export class AIController {
         throw new Error('Product name must be sended and it must be longer than 2 characters.');
 
       const gptResponse = await this.aiService.askGptWithProduct(body.productName);
-
       const insertedIngredients = await this.ingredientService.createMany(gptResponse.ingredients as Ingredient[]);
-
       const product = await this.productService.createFromGpt(
         { ...gptResponse.product, productType: body.productType || ProductType.F },
         insertedIngredients

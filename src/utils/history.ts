@@ -4,6 +4,8 @@ const firstMessage: string = `I need a JSON data. This data should list products
 
 The fields must be always the same and they are name, brand, description, isHarmful, harmfullnessPercentage, productType for inside product object. name, description and isHarmful for ingredients array. So my json response should be return two things. An array of ingredients, and an object of product.
 
+Description fields must have more length. It should at least 140 character text.
+
 Json Data: ${{
   name: '',
   brand: '',
