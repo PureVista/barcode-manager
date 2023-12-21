@@ -1,14 +1,15 @@
 import { Application } from 'express';
 import { MicroframeworkSettings, MicroframeworkLoader } from 'microframework';
 import { createExpressServer } from 'routing-controllers';
+
 import { env } from '../env';
-import { JsonBodyParserMiddleware, UrlencodedBodyParserMiddleware } from '../api';
+import { AIController, ProductController, JsonBodyParserMiddleware, UrlencodedBodyParserMiddleware } from '../api';
 
 export const expressLoader: MicroframeworkLoader = (settings: MicroframeworkSettings | undefined) => {
   const expressApp: Application = createExpressServer({
     routePrefix: '/api',
     middlewares: [JsonBodyParserMiddleware, UrlencodedBodyParserMiddleware],
-    controllers: [],
+    controllers: [ProductController, AIController],
     classTransformer: false,
     cors: true,
   });
