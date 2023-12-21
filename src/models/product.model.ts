@@ -9,11 +9,11 @@ export enum ProductType {
 
 export const Product = z.object({
   name: z.string(),
-  barcodes: z.array(z.string()),
+  barcodes: z.array(z.string()).default([]).optional(),
   brand: z.string(),
   description: z.string(),
   isHarmful: z.boolean(),
-  harmfulPercent: z.number(),
+  harmfulnessPercentage: z.number(),
   productType: z.nativeEnum(ProductType),
   ingredients: z.array(z.instanceof(ObjectId)).default([]).optional(),
   createdAt: z.date().optional().default(new Date()),
