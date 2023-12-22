@@ -23,6 +23,8 @@ export const Product = z.object({
   isHarmful: z.boolean(),
   harmfulnessPercentage: z.number(),
   productType: z.nativeEnum(ProductType),
+  imageUrl: z.string().optional(),
+  isImageFilled: z.boolean().default(false),
   ingredients: z.array(Ingredient).default([]).optional(),
   createdAt: z.date().optional().default(new Date()),
   updatedAt: z.date().optional().default(new Date()),
