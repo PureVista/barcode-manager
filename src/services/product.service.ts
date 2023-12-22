@@ -1,11 +1,16 @@
-import { Filter } from 'mongodb';
+import { Filter, UpdateFilter } from 'mongodb';
 
-import { Product, ProductType, ProductWithId, Products } from '../models';
+import { ImageStatus, Product, ProductType, ProductWithId, Products } from '../models';
 
 export class ProductService {
   findAll = async (query?: Filter<ProductWithId>): Promise<ProductWithId[]> => {
     const products = await Products.find(query ?? {}).toArray();
     return products;
+  };
+
+  findDocumentsWithStatusNone = async (limit: number): Promise<ProductWithId[]> => {
+    const eComOrderReturns = await Products.find({ status: ImageStatus.N }).limit(limit).toArray();
+    return eComOrderReturns;
   };
 
   findOne = async (query: Filter<ProductWithId>): Promise<ProductWithId | null> => {
@@ -17,6 +22,26 @@ export class ProductService {
     const product = Product.parse(_product);
     const insertResult = await Products.insertOne(product);
     return { _id: insertResult.insertedId, ...product };
+  };
+
+  updateProcessingProductsToFailed = async (): Promise<boolean> => {
+    const product = await Products.updateMany({ imageStatus: ImageStatus.P }, { $set: { imageStatus: ImageStatus.F } });
+    return product.acknowledged;
+  };
+
+  updateOneToFailed = async (query: Filter<Product>): Promise<boolean> => {
+    const product = await Products.updateMany(query, { $set: { imageStatus: ImageStatus.F } });
+    return product.acknowledged;
+  };
+
+  updateNoneProductsToProcessing = async (): Promise<boolean> => {
+    const product = await Products.updateMany({ imageStatus: ImageStatus.N }, { $set: { imageStatus: ImageStatus.P } });
+    return product.acknowledged;
+  };
+
+  updateMany = async (query: Filter<ProductWithId>, updateFilter: UpdateFilter<Product>): Promise<boolean> => {
+    const product = Products.updateMany(query, updateFilter);
+    return (await product).acknowledged;
   };
 
   mapAPIQueryParamForProducts = (isFood: boolean = false): Filter<ProductWithId> => {

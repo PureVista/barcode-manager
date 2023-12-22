@@ -1,6 +1,13 @@
 import * as z from 'zod';
-import { ObjectId, WithId } from 'mongodb';
+import { WithId } from 'mongodb';
 import { db } from '../loaders';
+
+export enum ImageStatus {
+  N = 'None',
+  P = 'Processing',
+  C = 'Completed',
+  F = 'Failed',
+}
 
 export enum ProductType {
   F = 'Food',
@@ -24,7 +31,7 @@ export const Product = z.object({
   harmfulnessPercentage: z.number(),
   productType: z.nativeEnum(ProductType),
   imageUrl: z.string().optional(),
-  isImageFilled: z.boolean().default(false),
+  imageStatus: z.nativeEnum(ImageStatus).default(ImageStatus.N),
   ingredients: z.array(Ingredient).default([]).optional(),
   createdAt: z.date().optional().default(new Date()),
   updatedAt: z.date().optional().default(new Date()),
