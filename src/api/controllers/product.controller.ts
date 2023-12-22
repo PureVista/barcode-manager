@@ -3,14 +3,13 @@ import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 
 import { ProductWithId } from '../../models';
-import { IngredientService, ProductService } from '../../services';
+import { ProductService } from '../../services';
 import { ArrayResponse, ObjectResponse } from '..';
 
 @Controller('/products')
 export class ProductController {
-  constructor(private productService: ProductService, private ingredientService: IngredientService) {
+  constructor(private productService: ProductService) {
     this.productService = new ProductService();
-    this.ingredientService = new IngredientService();
   }
 
   @Get()
@@ -33,9 +32,8 @@ export class ProductController {
       const _id = new ObjectId(request.params._id);
       const product = await this.productService.findOne({ _id });
       if (!product) throw new Error(`There is no product with this id: ${_id}`);
-      const ingredients = await this.ingredientService.findAll({ _id: { $in: product.ingredients } });
 
-      return res.status(200).send({ result: { product, ingredients } });
+      return res.status(200).send({ result: product });
     } catch (error: any) {
       return res.status(400).send(error.message);
     }

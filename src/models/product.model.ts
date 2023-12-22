@@ -7,6 +7,14 @@ export enum ProductType {
   C = 'Cosmetic',
 }
 
+export const Ingredient = z.object({
+  name: z.string(),
+  isHarmful: z.boolean(),
+  description: z.string(),
+  isResponsed: z.boolean().default(false),
+  isApproved: z.boolean().default(false),
+});
+
 export const Product = z.object({
   name: z.string(),
   barcodes: z.array(z.string()).default([]).optional(),
@@ -15,7 +23,7 @@ export const Product = z.object({
   isHarmful: z.boolean(),
   harmfulnessPercentage: z.number(),
   productType: z.nativeEnum(ProductType),
-  ingredients: z.array(z.instanceof(ObjectId)).default([]).optional(),
+  ingredients: z.array(Ingredient).default([]).optional(),
   createdAt: z.date().optional().default(new Date()),
   updatedAt: z.date().optional().default(new Date()),
 });

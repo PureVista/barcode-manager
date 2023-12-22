@@ -1,15 +1,14 @@
 import { Body, Controller, Post, Res } from 'routing-controllers';
 import { Response } from 'express';
 
-import { AIService, IngredientService, ProductService } from '../../services';
+import { AIService, ProductService } from '../../services';
 import { ObjectResponse } from '..';
-import { Ingredient, ProductType } from '../../models';
+import { ProductType } from '../../models';
 
 @Controller('/ai')
 export class AIController {
-  constructor(private aiService: AIService, private ingredientService: IngredientService, private productService: ProductService) {
+  constructor(private aiService: AIService, private productService: ProductService) {
     this.aiService = new AIService();
-    this.ingredientService = new IngredientService();
     this.productService = new ProductService();
   }
 
@@ -24,8 +23,11 @@ export class AIController {
       const productType = body.productType === ProductType.C ? ProductType.C : ProductType.F;
 
       const gptResponse = await this.aiService.askGptWithProduct(body.productName);
-      const insertedIngredients = await this.ingredientService.createMany(gptResponse.ingredients as Ingredient[]);
-      const product = await this.productService.createFromGpt({ ...gptResponse.product, productType }, insertedIngredients);
+      const product = await this.productService.createFromGpt({
+        ...gptResponse.product,
+        productType,
+        ingredients: gptResponse.ingredients,
+      });
       return res.status(200).send({ result: product });
     } catch (error: any) {
       return res.status(400).send(error.message);
