@@ -10,14 +10,14 @@ Json Data: ${{
   name: '',
   brand: '',
   description: 'About it`s harmfullness 2 or 3 line text.',
-  isHarmful: '// Very Harmful / Harmful / Beneficial / Very Beneficial', 
+  isHarmful: '// Very Harmful / Harmful / Beneficial / Very Beneficial',
   harmfullnessPercentage: 50, // number between 0 - 100 for damaging health
   foodOrCosmetic: '', // Food OR Cosmetic
   ingredients: [
     {
       name: '',
       description: 'About it`s harmfullness 2 or 3 line text.',
-      isHarmful: '// Very Harmful / Harmful / Beneficial / Very Beneficial', 
+      isHarmful: '// Very Harmful / Harmful / Beneficial / Very Beneficial',
     },
   ],
 }}

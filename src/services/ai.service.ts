@@ -1,21 +1,30 @@
 import OpenAI from 'openai';
 import { env } from '../env';
-import { fillHistory } from '../utils';
-import { GptProductModel } from '../api';
+import { takeIngredients, takeProduct } from '../utils';
+import { GptIngredientsModel, GptProductModel, GptResponse } from '../api';
 
 export class AIService {
   private apiKey: string = env.open_ai.apiKey;
   private model: string = env.open_ai.model;
   private openAI = new OpenAI({ apiKey: this.apiKey, maxRetries: 0, timeout: 20 * 1000 });
 
-  askGptWithProduct = async (productName: string): Promise<GptProductModel> => {
-    const chatCompletion = await this.openAI.chat.completions.create({
-      messages: fillHistory(productName),
+  askGpt = async (productName: string): Promise<GptResponse> => {
+    const chatCompletionForIngredients = await this.openAI.chat.completions.create({
+      messages: [takeIngredients(productName)],
       model: this.model,
     });
-    const content = chatCompletion.choices[0].message.content;
-    if (!content) throw new Error('There is an error when fetching data from AI.');
-    const response: GptProductModel = JSON.parse(content);
-    return response;
+    const messageForIngredients = chatCompletionForIngredients.choices[0].message;
+    if (!messageForIngredients.content) throw new Error('There is an error when fetching data from AI.');
+    const ingredients: GptIngredientsModel = JSON.parse(messageForIngredients.content);
+
+    const chatCompletionForProduct = await this.openAI.chat.completions.create({
+      messages: [takeIngredients(productName), messageForIngredients, takeProduct(productName)],
+      model: this.model,
+    });
+    const messageForProduct = chatCompletionForProduct.choices[0].message;
+    if (!messageForProduct.content) throw new Error('There is an error when fetching data from AI.');
+    const product: GptProductModel = JSON.parse(messageForProduct.content);
+
+    return { product, ingredients: ingredients };
   };
 }

@@ -1,6 +1,6 @@
 import { Filter } from 'mongodb';
 
-import {  Product, ProductType, ProductWithId, Products } from '../models';
+import { Product, ProductType, ProductWithId, Products } from '../models';
 
 export class ProductService {
   findAll = async (query?: Filter<ProductWithId>): Promise<ProductWithId[]> => {
@@ -13,7 +13,7 @@ export class ProductService {
     return product;
   };
 
-  createFromGpt = async (_product: Filter<Product>): Promise<ProductWithId> => {
+  create = async (_product: Filter<Product>): Promise<ProductWithId> => {
     const product = Product.parse(_product);
     const insertResult = await Products.insertOne(product);
     return { _id: insertResult.insertedId, ...product };
