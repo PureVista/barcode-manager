@@ -1,1 +1,1 @@
-export * from './scrapeImages.scheduler';
+export * from './searchImages.scheduler';
