@@ -2,7 +2,7 @@ import { IScheduler } from '../interfaces';
 import { ProductWithId } from '../models';
 import { ProductService } from '../services';
 
-export class ScrapeImages implements IScheduler {
+export class SearchImages implements IScheduler {
   name: string = 'ScrapeImages';
   productService = new ProductService();
   constructor(public limit: number, public batchSize: number) {}
@@ -17,7 +17,7 @@ export class ScrapeImages implements IScheduler {
 
       for (let i = 0; i < productsWithoutImages.length; i += this.batchSize) {
         const requests = productsWithoutImages.slice(i, i + this.batchSize).map(async (product) => {
-          await this.scrapeImage(product);
+          await this.searchImage(product);
         });
         await Promise.all(requests);
       }
@@ -26,8 +26,9 @@ export class ScrapeImages implements IScheduler {
     }
   };
 
-  scrapeImage = async (product: ProductWithId): Promise<void> => {
+  searchImage = async (product: ProductWithId): Promise<void> => {
     try {
+      
     } catch (error) {
       await this.productService.updateOneToFailed(product);
     }
