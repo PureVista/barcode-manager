@@ -1,6 +1,6 @@
 import { ChatCompletionMessageParam } from 'openai/resources';
 
-export const takeIngredients = (productName: string): ChatCompletionMessageParam => {
+export const takeIngredients = (productName: string, brand?: string): ChatCompletionMessageParam => {
   return {
     role: 'user',
     content: `I need to see what is harmful and what is not, so act me as a food engineer and send me a JSON for a given product.\n I need only JSON data, because I will processing them after.
@@ -12,7 +12,7 @@ export const takeIngredients = (productName: string): ChatCompletionMessageParam
     isHarmful: boolean
     ]
   }
-  Given product is ${productName}. Don't return any text, return only JSON data.`,
+  Given product is ${productName} ${brand && `${brand}`}. Don't return any text, return only JSON data.`,
   };
 };
 
